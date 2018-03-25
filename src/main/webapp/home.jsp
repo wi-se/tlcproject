@@ -5,7 +5,6 @@
 
 <html>
 <head>
-<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 </head>
 <body>
 	<!-- Content de la page -->
@@ -22,7 +21,7 @@
 		</thead>
 		<tbody>
 
-			<c:forEach items="${advertisement}" var="adv">
+			<c:forEach items="${advertisements}" var="adv">
 				<tr>
 					<td>${adv.title}</td>
 					<td>${adv.price}</td>

@@ -2,6 +2,7 @@ package istic.project.servlets;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class AdvertisementServlet extends HttpServlet {
 		});
 		advertisements.stream().forEach(p -> p.setCreatedAt(new Date()));
 		advService.add(advertisements);
+		request.setAttribute("advertisements", new ArrayList<Advertisement>());
 		response.sendRedirect("/home.jsp");
 
 	}
@@ -64,6 +66,7 @@ public class AdvertisementServlet extends HttpServlet {
 		List<Advertisement> advertisement = mapper.readValue(content, new TypeReference<List<Advertisement>>() {
 		});
 		advService.delete(advertisement);
+		request.setAttribute("advertisements", new ArrayList<Advertisement>());
 		response.sendRedirect("/home.jsp");
 
 	}
