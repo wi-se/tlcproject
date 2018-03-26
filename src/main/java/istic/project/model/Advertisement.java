@@ -2,15 +2,19 @@ package istic.project.model;
 
 import java.util.Date;
 
-//@Entity
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+
+@Entity
 public class Advertisement {
-	// @Id
+	@Id
 	private Long id;
-	// @Index
+	@Index
 	private String title;
-	// @Index
+	@Index
 	private Double price;
-	// @Index
+	@Index
 	private Date createdAt;
 
 	public Long getId() {

@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +22,7 @@ import istic.project.model.Criteria;
 import istic.project.services.IAdvertisementService;
 import istic.project.services.impl.AdvertisementService;
 
-@WebServlet(name = "advertisements", urlPatterns = { "/api/advertisements" })
+@WebServlet(name="AdAdvertisementServlet", urlPatterns= {"/advertisements"})
 public class AdvertisementServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final String DATE_FORMAT = "yyy-MM-dd";
@@ -29,7 +31,11 @@ public class AdvertisementServlet extends HttpServlet {
 	private IAdvertisementService advService = AdvertisementService.getInstance();
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		if(request.getParameter("delete")!= null && request.getParameter("delete").equals("true")) {
+			doDelete(request.getParameter("content"));
+		}
+		System.out.println("#############DO GET###############");
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		Criteria criteria = new Criteria();
@@ -40,11 +46,13 @@ public class AdvertisementServlet extends HttpServlet {
 		criteria.setMinCreationDate(toDate(request.getParameter(Constants.MIN_DATE)));
 		List<Advertisement> advertisements = advService.getByCriteria(criteria);
 		request.setAttribute("advertisements", advertisements);
-		response.sendRedirect("/home.jsp");
+		request.getRequestDispatcher("/home.jsp").forward(request, response);
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		System.out.println("#############DO POST###############");
+
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		String content = request.getParameter("content");
@@ -54,21 +62,18 @@ public class AdvertisementServlet extends HttpServlet {
 		advertisements.stream().forEach(p -> p.setCreatedAt(new Date()));
 		advService.add(advertisements);
 		request.setAttribute("advertisements", new ArrayList<Advertisement>());
-		response.sendRedirect("/home.jsp");
+		request.getRequestDispatcher("/home.jsp").forward(request, response);
 
 	}
 
-	@Override
-	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		String content = request.getParameter("content");
+	public void doDelete(String content) throws IOException, ServletException {
+		System.out.println("#############DO DELETE###############");
+
 		List<Advertisement> advertisement = mapper.readValue(content, new TypeReference<List<Advertisement>>() {
 		});
-		advService.delete(advertisement);
-		request.setAttribute("advertisements", new ArrayList<Advertisement>());
-		response.sendRedirect("/home.jsp");
-
+		advertisement.stream().map(a -> new Criteria(a.getPrice(), a.getPrice(), a.getTitle(), null, null)).forEach(a -> {
+			advService.delete(advService.getByCriteria(a));
+		});
 	}
 
 	private Double toDouble(String s) {

@@ -34,23 +34,21 @@ public class AdvertisementService implements IAdvertisementService {
 		return instance;
 	}
 
-	private List<Advertisement> filterByTitle(List<Advertisement> advertisements,
- String title) {
- if (advertisements != null) {
- return advertisements.stream().filter(a -> {
- if (title != null && !title.isEmpty()) {
- return a.getTitle().startsWith(title);
+	private List<Advertisement> filterByTitle(List<Advertisement> advertisements, String title) {
+		if (advertisements != null) {
+			return advertisements.stream().filter(a -> {
+				if (title != null && !title.isEmpty()) {
+					return a.getTitle().startsWith(title);
 
- }
- return true;
- }).collect(Collectors.toList());
- } else if (title != null && !title.isEmpty()) {
- return ObjectifyService.ofy().load().type(Advertisement.class).filter("title
- >=", title)
- .filter("title <", title + "\uFFFD").list();
- }
- return advertisements;
- }
+				}
+				return true;
+			}).collect(Collectors.toList());
+		} else if (title != null && !title.isEmpty()) {
+			return ObjectifyService.ofy().load().type(Advertisement.class).filter("title >=", title)
+					.filter("title <", title + "\uFFFD").list();
+		}
+		return advertisements;
+	}
 
 	private List<Advertisement> filterByPrice(List<Advertisement> advertisements, Double minPrice, Double maxPrice) {
 		if (advertisements != null) {

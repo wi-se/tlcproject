@@ -16,7 +16,7 @@
 			<tr>
 				<td>title</td>
 				<td>price</td>
-				<td>creation date/td>
+				<td>creation date</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -28,10 +28,11 @@
 					<td>${adv.createdAt}</td>
 				</tr>
 			</c:forEach>
+		</tbody>
 	</table>
 
 	<!-- Action sur la page -->
-	<form action="/api/advertisements" method="GET">
+	<form action="/advertisements" method="GET">
 		<div>
 			<div>
 				<label>Search by title:</label>
@@ -84,14 +85,14 @@
 		</div>
 	</form>
 
-	<form action="/api/advertisements" method="POST">
+	<form action="/advertisements" method="POST">
 		<div>
 
 			<div>
 				<label>Data in JSON : [{ "title":"data", "price":00}]</label>
 			</div>
 			<div>
-				<textarea name="content" cols=40 rows=6></textarea>
+				<textarea id="textarea" name="content" cols=40 rows=6></textarea>
 			</div>
 
 		</div>
@@ -100,42 +101,16 @@
 		</div>
 	</form>
 
-	<form action="/api/advertisements" method="get">
+	<form action="/advertisements" method="get">
 		<div>
-			<input type="hidden" name="content"
-				value="${fn:escapeXml(json_advs)}" />
-		</div>
+			<div>
+				<textarea id="textarea" name="content" cols=40 rows=6></textarea>
+			</div>
+			<input type="hidden" name="delete" value="true"/>
+		</div> 
 		<div>
 			<input type="submit" value="delete" />
 		</div>
 	</form>
 </body>
-<input type="submit" value="Search" />
-</div>
-</form>
-
-<form action="/api/advertisements" method="post">
-	<div>
-
-		<div>
-			<label>Send advertisements ()</label>
-		</div>
-		<div>
-			<textarea name="content" cols=40 rows=6></textarea>
-		</div>
-
-	</div>
-	<div>
-		<input type="submit" value="Add" />
-	</div>
-</form>
-
-<form action="/api/advertisements" method="delete">
-	<div>
-		<input type="hidden" name="content" value="${fn:escapeXml(json_advs)}" />
-	</div>
-	<div>
-		<input type="submit" value="delete" />
-	</div>
-</form>
-</body>
+</html>
