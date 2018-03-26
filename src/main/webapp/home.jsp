@@ -31,7 +31,7 @@
 	</table>
 
 	<!-- Action sur la page -->
-	<form action="/home.jsp" method="get">
+	<form action="/api/advertisements" method="GET">
 		<div>
 			<div>
 				<label>Search by title:</label>
@@ -84,7 +84,7 @@
 		</div>
 	</form>
 
-	<form action="/api/advertisements" method="post">
+	<form action="/api/advertisements" method="POST">
 		<div>
 
 			<div>
